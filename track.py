@@ -34,7 +34,7 @@ while(cap.isOpened()):
         cv2.imshow('mask',mask)
         cv2.imshow('res',res)
 
-        # draw bounding box for the players
+        # draw bounding boxes for the players
         cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
         cnt_thresh = 180
         teamA = []
