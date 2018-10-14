@@ -3,7 +3,7 @@ import numpy as np
 
 
 cap = cv2.VideoCapture(r'Copy_of_offsside7.mp4')
-# fourcc = int(cap.get(cv2.CAP_PROP_FOURCC))
+fourcc = int(cap.get(cv2.CAP_PROP_FOURCC))
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
 fps = cap.get(cv2.CAP_PROP_FPS)
 size = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
@@ -34,10 +34,9 @@ while(cap.isOpened()):
         cv2.imshow('mask',mask)
         cv2.imshow('res',res)
 
-        # draw bounding boxes for the players
+        # draw bounding box for the players
         cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
         cnt_thresh = 180
-        teamA = []
         if len(cnts) > 0:
             c = sorted(cnts, key=cv2.contourArea, reverse=True)
             for i in range(len(c)):
@@ -45,7 +44,7 @@ while(cap.isOpened()):
                     break
 
                 x, y, w, h = cv2.boundingRect(c[i])
-                h += 5
+                h += 10
                 y -= 5
                 if h < 0.8 * w:
                     continue
@@ -54,9 +53,10 @@ while(cap.isOpened()):
 
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
                 M = cv2.moments(c[i])
+                # find the center of gravity of the players
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-                foot = (center[0], int(center[1] + h * 1.5))
-                teamA.append(foot)
+                # find the foot of the players
+                foot = (center[0], int(center[1] + h*1.1))
                 cv2.circle(frame, foot, 5, (0, 0, 255), -1)
 
         out.write(frame)
