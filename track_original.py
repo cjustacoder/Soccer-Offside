@@ -4,7 +4,7 @@ import numpy as np
 
 cap = cv2.VideoCapture(r'Copy_of_offsside7.mp4')
 # fourcc = int(cap.get(cv2.CAP_PROP_FOURCC))
-fourcc = cv2.VideoWriter_fourcc(*'MPEG')
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
 fps = cap.get(cv2.CAP_PROP_FPS)
 size = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
 out = cv2.VideoWriter('output.avi', fourcc,fps , size)
