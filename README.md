@@ -4,7 +4,7 @@
 
 # Approach
 ## Player Detection
-colorbased detection(HSV)
+Colorbased Detection(HSV)
 ## Boundary Line Detection
 Hough Transform
 
