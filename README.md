@@ -52,5 +52,5 @@ To check out accomplishment, you can go to directory ```output_video```.
 ## Player Detection and Tracking
 ![Player Tracking](/gif/Player_Track.gif)
 ## Boundary Lines Detection
-![Hough](/gif/Player_Track.gif)
+![Hough](/gif/Hough.gif)
 
