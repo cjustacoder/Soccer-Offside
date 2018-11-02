@@ -23,8 +23,9 @@ We implement this process by using OpenCV with following steps:
 
 1. Enter the corresponding HSV value of our interest color to find and differentiate players. For example, the range of blue in HSV can be set between ```javascript [110, 50, 50]``` and ```javascript [130, 255, 255]```;
 2. Build a mask with these HSV value. The mask will make "holes" in those corresponding areas with HSV value in this range, which can remain these parts from the frame and wipe the other parts out.
-![GitHub Logo](/gif/Mask.gif)
+![Mask](/gif/Mask.gif)
 3. Use the mask as a filter, to remain parts of the frame with required color, and wipe the rest parts out.
+![Res](/gif/Res.gif)
 4. Extract boundaries of each remaining parts.
 5. Set threshold to exclude those parts with an area under threshold(which are considered to be noises).
 6. Draw rectangular around each area remained.
@@ -48,6 +49,8 @@ If you wish to use our material, please go to directory ```javascript material``
 
 # Demo
 To check out accomplishment, you can go to directory ```javascript output_video```.
-
-
+## Player Detection and Tracking
+![Player Tracking](/gif/Player_Track.gif)
+## Boundary Lines Detection
+![Hough](/gif/Player_Track.gif)
 
