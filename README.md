@@ -37,12 +37,12 @@ We implement this process by using OpenCV with following steps:
 Hough transfrom.
 ### Implementation
 we also use the OpenCV sourse to complete the boundary line detection with the following steps:
-In this project, we use the Probailistic Hough Line Transform. In this type hough transform, you can see that even for a line with two arguments(maxLineGap and miniLineLength), it takes a lot of computation. Probabilistic Hough Transform is an optimization of Hough Transform we saw. It doesn’t take all the points into consideration, instead take only a random subset of points and that is sufficient for line detection.
-1.We need to load the video and take eacg frame
-2.Implement same first two steps with the player tracking module to build the mask.
-3.Apply edge detection method on the image by using the Canny detector
-4.Detector the line using the Probailistic Hough Line Transform. In our case, the threshold is 200, the Maxlinegap is 80 and the Minilinelength is 700. The thresholdis the minimum number of intersections to “detect” a line. The  Maxlinegap can allow some gap between points and has higher probability to detect potential line segment. The Minilinelength help us to filter outs some irrelevant line.
-5.Use the colors to draw the lines we detect successfully.
+In this project, we use the Probailistic Hough Line Transform. In this type hough transform, you can see that even for a line with two arguments(maxLineGap and miniLineLength), it takes a lot of computation. Probabilistic Hough Transform is an optimization of Hough Transform we saw. It doesn’t take all the points into consideration, instead take only a random subset of points and that is sufficient for line detection;
+1.We need to load the video and take eacg frame;
+2.Implement same first two steps with the player tracking module to build the mask;
+3.Apply edge detection method on the image by using the Canny detector;
+4.Detector the line using the Probailistic Hough Line Transform. In our case, the threshold is 200, the Maxlinegap is 80 and the Minilinelength is 700. The thresholdis the minimum number of intersections to “detect” a line. The  Maxlinegap can allow some gap between points and has higher probability to detect potential line segment. The Minilinelength help us to filter outs some irrelevant line;
+5.Use the colors to draw the lines we detect successfully;
 
 # How to Run Our Code
 ## Environment Configuration
