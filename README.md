@@ -1,5 +1,6 @@
 # Soccer-Offside Detection
 :soccer:
+
 ## Project Abstraction
 The goal of this project is to detect an offside situation in a soccer game. 
 
@@ -66,4 +67,5 @@ To check out accomplishment, you can go to directory ```output_video```.
 ![Player Tracking](/gif/Player_Track.gif)
 ## Boundary Lines Detection
 ![Hough](/gif/Hough.gif)
+
 
