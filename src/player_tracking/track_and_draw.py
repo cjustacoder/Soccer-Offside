@@ -1,36 +1,46 @@
 import cv2
 import numpy as np
 
-
+# input the test video
 cap = cv2.VideoCapture(r'test.mp4')
+
+# chose a video output encoding method
 # fourcc = int(cap.get(cv2.CAP_PROP_FOURCC))
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
+
+# set fps of output video(same as input video)
 fps = cap.get(cv2.CAP_PROP_FPS)
 test = cap.get(cv2.CAP_PROP_FOURCC)
+
+# set size of output video(same as input video)
 size = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+
+# generate the output video
 out = cv2.VideoWriter('output.avi', fourcc, fps, size)
 
 
-
-while(cap.isOpened()):
+while cap.isOpened():
 
     # Take each frame
     ret, frame = cap.read()
+
+    # if we get a frame(video is not over)
     if ret:
 
-    # Convert BGR to HSV
+        # Convert BGR to HSV
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-    # define range of blue color in HSV
+        # define range of blue color in HSV
         lower_blue = np.array([110, 50, 50])
         upper_blue = np.array([130, 255, 255])
-    # define range of red color in HSV
+
+        # define range of red color in HSV
         lower_red = np.array([0, 50, 50])
         upper_red = np.array([10, 255, 255])
-    # define range of white color in HSV
+
+        # define range of white color in HSV
         lower_white = np.array([0, 0, 200])
         upper_white = np.array([255, 55, 255])
-
 
         # Threshold the HSV image to get only blue colors
         mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
@@ -41,7 +51,8 @@ while(cap.isOpened()):
         res_blue = cv2.bitwise_and(frame, frame, mask=mask_blue)
         res_red = cv2.bitwise_and(frame, frame, mask=mask_red)
         res_white = cv2.bitwise_and(frame, frame, mask=mask_white)
-        # show res in window
+
+        # uncommon code below to show video result in window
         # cv2.imshow('frame', frame)
         # cv2.imshow('mask', mask_blue)
         # cv2.imshow('res', res_white)
@@ -49,9 +60,10 @@ while(cap.isOpened()):
         # draw bounding box for the players
         cnts_blue = cv2.findContours(mask_blue.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
         cnts_red = cv2.findContours(mask_red.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
+
         # retrieves only the extreme outer contours
         cnt_thresh = 10
-        if len(cnts_blue) > 0:
+        if len(cnts_blue) > 0 or len(cnts_red) > 0:
             c = sorted(cnts_blue, key=cv2.contourArea, reverse=True)
             d = sorted(cnts_red, key=cv2.contourArea, reverse=True)
             for i in range(len(c)):
