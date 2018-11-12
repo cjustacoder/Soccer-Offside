@@ -23,8 +23,8 @@ args = vars(ap.parse_args())
 # list of tracked points
 # greenLower = (29, 86, 6)
 # greenUpper = (64, 255, 255)
-greenLower = (0, 0, 205)
-greenUpper = (255, 50, 255)
+whiteLower = (0, 0, 205)
+whiteUpper = (255, 50, 255)
 pts = deque(maxlen=args["buffer"])
 
 # if a video path was not supplied, grab the reference
@@ -86,7 +86,7 @@ while True:
     # construct a mask for the color "green", then perform
     # a series of dilations and erosions to remove any small
     # blobs left in the mask
-    mask = cv2.inRange(hsv, greenLower, greenUpper)
+    mask = cv2.inRange(hsv, whiteLower, whiteUpper)
     cv2.imshow("frame", frame)
 
     # mask = cv2.erode(mask, None, iterations=2)
@@ -146,6 +146,8 @@ while True:
                 # then update the list of tracked points
             # cv2.circle(frame, (int(x), int(y)), int(radius), (0, 255, 255), 2)
             cv2.circle(frame, center, 5, (0, 0, 255), -1)
+            cv2.rectangle(frame, (center[0]-10, center[1]+10), (center[0]+10, center[1]-10), (0, 255, 0), 3)
+            # top-left corner and bottom-right corner of rectangle
     cv2.imshow('output', frame)
     out.write(frame)
     if cv2.waitKey(80) & 0xFF == ord('q'):

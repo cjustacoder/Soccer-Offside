@@ -57,6 +57,8 @@ else:
 # initialize the FPS throughput estimator
 fps = None
 counter = 0
+
+# this part use to 
 # loop over frames from the video stream
 while True:
     # grab the current frame, then handle if we are using a
@@ -73,46 +75,48 @@ while True:
     frame = imutils.resize(frame, width=1440)
     (H, W) = frame.shape[:2]
     # -------------------------here I want to set auto detect ball to help tracking--------------
-    # if counter % 20 == 0:
-    #     # library of color
-    #     whiteLower = (0, 0, 205)
-    #     whiteUpper = (255, 50, 255)
-    #     # blur to help detect
-    #     blurred = cv2.GaussianBlur(frame, (5, 5), 0)
-    #     # change color space
-    #     hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
-    #     # create mask regarding to color
-    #     mask = cv2.inRange(hsv, whiteLower, whiteUpper)
-    #     cv2.imshow("mask", mask)
-    #     # extract out contours
-    #     cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
-    #                             cv2.CHAIN_APPROX_SIMPLE)
-    #     cnts = cnts[0] if imutils.is_cv2() else cnts[1]
-    #     center = None
-    #     # sort contours
-    #     cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
-    #     # set threshold
-    #     cnt_thresh_up = 100
-    #     cnt_thresh_down = 10
-    #     if len(cnts) > 0:
-    #         print("have cnts")
-    #         for i in range(len(cnts)):
-    #             c = cnts[i]
-    #             if cv2.contourArea(c) > cnt_thresh_up:
-    #                 continue
-    #             if cv2.contourArea(c) < cnt_thresh_down:
-    #                 continue
-    #             print("have something pass")
-    #             M = cv2.moments(c)
-    #             if M["m00"] != 0:
-    #                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-    #             else:
-    #                 center = (0, 0)
-    #     print(center)
-    #     if center:
-    #         initBB = (center, 15, 15)
-    #         fps = FPS().start()
-    #         print(initBB)
+    if counter % 20 == 0:
+        # library of color
+        whiteLower = (0, 0, 205)
+        whiteUpper = (255, 50, 255)
+        # blur to help detect
+        blurred = cv2.GaussianBlur(frame, (5, 5), 0)
+        # change color space
+        hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
+        # create mask regarding to color
+        mask = cv2.inRange(hsv, whiteLower, whiteUpper)
+        cv2.imshow("mask", mask)
+        # extract out contours
+        cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
+                                cv2.CHAIN_APPROX_SIMPLE)
+        cnts = cnts[0] if imutils.is_cv2() else cnts[1]
+        center = None
+        # sort contours
+        cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
+        # set threshold
+        cnt_thresh_up = 50
+        cnt_thresh_down = 10
+        if len(cnts) > 0:
+            # print("have cnts")
+            for i in range(len(cnts)):
+                c = cnts[i]
+                print(cv2.contourArea(c))
+                if cv2.contourArea(c) > cnt_thresh_up:
+                    continue
+                if cv2.contourArea(c) < cnt_thresh_down:
+                    continue
+                # print("have something pass")
+                M = cv2.moments(c)
+                if M["m00"] != 0:
+                    center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+                else:
+                    center = (0, 0)
+        print(center)
+        if center:
+            initBB = (center[0], center[1], 15, 15)
+            fps = FPS().start()
+            tracker.init(frame, initBB)
+            print(initBB)
     # -----------------------------------------------------------------
     # check to see if we are currently tracking an object
     # print(initBB)
@@ -135,7 +139,7 @@ while True:
         info = [
             ("Tracker", args["tracker"]),
             ("Success", "Yes" if success else "No"),
-            ("FPS", "{:.2f}".format(fps.fps())),
+            # ("FPS", "{:.2f}".format(fps.fps())),
         ]
 
         # loop over the info tuples and draw them on our frame
