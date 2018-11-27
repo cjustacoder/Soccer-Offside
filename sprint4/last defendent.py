@@ -24,9 +24,33 @@ while(cap.isOpened()):
     # Take each frame
     ret, frame = cap.read()
     if ret:
-
+        # -------------------bounderay line----------------------------------
+        # kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
+        # sharpen = cv2.filter2D(frame, -1, kernel)
+        # # blurred = cv2.GaussianBlur(sharpen, (5, 5), 0)
+        # # Convert BGR to HSV
+        # hsv = cv2.cvtColor(sharpen, cv2.COLOR_BGR2HSV)
+        #
+        # # define range of blue color in HSV
+        # lower_white = np.array([0, 0, 150])
+        # upper_white = np.array([255, 50, 255])
+        #
+        # # Threshold the HSV image to get only blue colors
+        # mask = cv2.inRange(hsv, lower_white, upper_white)
+        #
+        # # Bitwise-AND mask and original image
+        # res = cv2.bitwise_and(frame, frame, mask=mask)
+        #
+        # edges = cv2.Canny(mask, 50, 120)
+        # lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 200, lines=100, minLineLength=1000, maxLineGap=200)
+        # if lines is not None:
+        #     for line in lines:
+        #         x1, y1, x2, y2 = line[0]
+        #         if (x2 - x1) < (y2 - y1):
+        #             cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+    # -----------------player detection --------------------
     # Convert BGR to HSV
-        blurred = cv2.GaussianBlur(frame, (9, 9), 0)
+        blurred = cv2.GaussianBlur(frame, (13, 13), 0)
         hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
 
     # define range of blue color in HSV
@@ -51,7 +75,7 @@ while(cap.isOpened()):
         res_white = cv2.bitwise_and(frame, frame, mask=mask_white)
         # show res in window
         # cv2.imshow('frame', frame)
-        # cv2.imshow('mask', mask_blue)
+        cv2.imshow('mask', mask_blue)
         # cv2.imshow('mask2', mask_red)
         # cv2.imshow('res', res_white)
 
@@ -128,7 +152,7 @@ while(cap.isOpened()):
             hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
             # create mask regarding to color
             mask = cv2.inRange(hsv, whiteLower, whiteUpper)
-            cv2.imshow("mask", mask)
+            # cv2.imshow("mask", mask)
             # extract out contours
             cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
                                 cv2.CHAIN_APPROX_SIMPLE)
@@ -163,7 +187,7 @@ while(cap.isOpened()):
                 fps = FPS().start()
                 tracker.init(frame, initBB)
                 flag_track = True
-                print("initBB",initBB)
+                # print("initBB",initBB)
     # -----------------------------------------------------------------
     # check to see if we are currently tracking an object
     # print(initBB)
@@ -179,7 +203,7 @@ while(cap.isOpened()):
             # check to see if the tracking was a success
             if success:
                 (x, y, w, h) = [int(v) for v in box]
-                print("box",box)
+                # print("box",box)
                 cv2.rectangle(frame, (x, y), (x + w, y + h),
                               (0, 255, 0), 2)
 
