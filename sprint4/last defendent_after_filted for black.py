@@ -6,7 +6,7 @@ from imutils.video import FPS
 import time
 
 
-cap = cv2.VideoCapture(r'offsidenew2.mp4')
+cap = cv2.VideoCapture(r'offsidenew9.mp4')
 # fourcc = int(cap.get(cv2.CAP_PROP_FOURCC))
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
 fps = cap.get(cv2.CAP_PROP_FPS)
@@ -15,8 +15,8 @@ size = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_H
 out = cv2.VideoWriter('output.avi', fourcc, fps, size)
 
 # create tracker
-# tracker = cv2.TrackerMIL_create()
-tracker = cv2.TrackerTLD_create()
+tracker = cv2.TrackerMIL_create()
+# tracker = cv2.TrackerTLD_create()
 # create counter
 counter = 0
 initBB = None
@@ -109,24 +109,24 @@ while(cap.isOpened()):
         lower_yellow = np.array([33, 50, 70])
         upper_yellow = np.array([40, 150,170])
 
-    ##-----------test for offsidenew8 video-------------------##
+    ##-----------test for offsidenew9 video-------------------##
     # # define range of red color for second video in HSV
         lower_red = np.array([0, 0, 0])
         upper_red = np.array([10, 255, 255])
     # define range of blue color in HSV
         lower_blue = np.array([100, 0, 0])
-        upper_blue = np.array([140, 100, 155])
+        upper_blue = np.array([180, 150, 155])
 
     ##————————————test for  offsidenew2 video--------------##
-    # # define range of blue color in HSV
-        lower_blue = np.array([100, 0, 0])
-        upper_blue = np.array([140, 255, 255])
-    # define range of red color in HSV
-        ##black color attacker
-        lower_red = np.array([0, 0, 65])
-        upper_red = np.array([180, 150 , 80])
-        # lower_red = np.array([0, 50, 65])
-        # upper_red = np.array([180, 180, 85])
+    # define range of blue color in HSV
+    #     lower_blue = np.array([100, 0, 0])
+    #     upper_blue = np.array([180, 255, 255])
+    # # define range of red color in HSV
+    #     ##black color attacker
+    #     lower_red = np.array([0, 0, 65])
+    #     upper_red = np.array([180, 150 , 82])
+    #     # lower_red = np.array([0, 50, 65])
+    #     # upper_red = np.array([180, 180, 85])
 
         # opening = cv2.morphologyEx(frame, cv2.MORPH_OPEN, kernel)
         # hsv2 = cv2.cvtColor(opening, cv2.COLOR_BGR2HSV)
@@ -250,11 +250,11 @@ while(cap.isOpened()):
         if counter % 10 == 0:
             # print("bingo")
             # library of color
-            whiteLower = (0, 0, 205)
+            whiteLower = (0, 0, 200)
             whiteUpper = (255, 50, 255)
             #new video ball color
-            # whiteLower = (0, 5, 135)
-            # whiteUpper = (155, 55, 155)
+            # whiteLower = (0, 0, 200)
+            # whiteUpper = (155, 55, 255)
             # blur to help detect
             blurred = cv2.GaussianBlur(frame, (5, 5), 0)
             # change color space
