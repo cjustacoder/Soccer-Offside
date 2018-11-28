@@ -6,12 +6,14 @@ from imutils.video import FPS
 import time
 
 
-cap = cv2.VideoCapture(r'offsidenew6.mp4')
+cap = cv2.VideoCapture(r'offsidewhite1.mp4')
 # fourcc = int(cap.get(cv2.CAP_PROP_FOURCC))
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
 fps = cap.get(cv2.CAP_PROP_FPS)
 test = cap.get(cv2.CAP_PROP_FOURCC)
 size = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+W = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+H = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 out = cv2.VideoWriter('output.avi', fourcc, fps, size)
 
 # create tracker
@@ -19,7 +21,7 @@ out = cv2.VideoWriter('output.avi', fourcc, fps, size)
 tracker = cv2.TrackerTLD_create()
 # create counter
 counter = 0
-
+record = None
 while(cap.isOpened()):
 
     # Take each frame
@@ -56,11 +58,11 @@ while(cap.isOpened()):
         hsv = cv2.cvtColor(sharpen, cv2.COLOR_BGR2HSV)
 
         # define range of blue color in HSV
-        lower_white_line = np.array([0, 0, 205])
-        upper_white_line = np.array([255, 50, 255])
+        lower_white = np.array([0, 0, 205])
+        upper_white = np.array([255, 50, 255])
 
         # Threshold the HSV image to get only blue colors
-        mask = cv2.inRange(hsv, lower_white_line, upper_white_line)
+        mask = cv2.inRange(hsv, lower_white, upper_white)
 
         # Bitwise-AND mask and original image
         res = cv2.bitwise_and(frame, frame, mask=mask)
@@ -97,19 +99,15 @@ while(cap.isOpened()):
     # define range of blue color in HSV
         lower_blue = np.array([100, 0, 0])
         upper_blue = np.array([140, 255, 255])
-    # # define range of red color in HSV
-    #     lower_red = np.array([0, 0, 0])
-    #     upper_red = np.array([5, 255, 255])
-
-    # define range of orange color in HSV
+    # define range of red color in HSV
         lower_red = np.array([0, 0, 0])
         upper_red = np.array([5, 255, 255])
     # define range of white color in HSV
         lower_white = np.array([0, 0, 200])
         upper_white = np.array([255, 55, 255])
     # define range of yellow color in HSV
-        lower_yellow = np.array([33, 50, 70])
-        upper_yellow = np.array([40, 150,170])
+        lower_yellow = np.array([50, 0, 0])
+        upper_yellow = np.array([60, 100, 100])
 
 
         # Threshold the HSV image to get only blue colors
@@ -139,7 +137,9 @@ while(cap.isOpened()):
 
     # retrieves only the extreme outer contours
         cnt_thresh = 100
-        location = []
+        location_blue = []
+        location_red = []
+        location_red_2d = []
         if len(cnts_blue) > 0:
             c = sorted(cnts_blue, key=cv2.contourArea, reverse=True)
             d = sorted(cnts_white, key=cv2.contourArea, reverse=True)
@@ -159,7 +159,7 @@ while(cap.isOpened()):
                 #     continue
                 # elif h / float(w) > 3:
                 #     continue
-                if x1_min<x:
+                if x1_min<x and x > 4/5*W:
                     pass
                 else:
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
@@ -171,15 +171,15 @@ while(cap.isOpened()):
                     else:
                         center = (0, 0)
                     # find the foot of the players
-                    location.append(center[0])
+                    location_blue.append(center[0])
                     foot = (center[0], int(center[1] + h*1.1))
                     cv2.circle(frame, foot, 5, (0, 0, 255), -1)
             # find the last one
-            # print("location of defendent: ",location)
-            # print("maximum is :", max(location))
-            # print("index: ", location.index(max(location)))
-            cv2.line(frame, (max(location), 0), (max(location), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))), (255, 0, 0), 2)
-            ##yellow color attacker
+            # print("location_blue of defendent: ",location_blue)
+            # print("maximum is :", max(location_blue))
+            # print("index: ", location_blue.index(max(location_blue)))
+            cv2.line(frame, (max(location_blue), 0), (max(location_blue), H), (255, 0, 0), 2)
+            ##yellow color
             # for i in range(len(f)):
             #     if cv2.contourArea(f[i]) < cnt_thresh:
             #         break
@@ -199,15 +199,13 @@ while(cap.isOpened()):
             #         # find the foot of the players
             #         foot = (center[0], int(center[1] + h * 1.1))
             #         cv2.circle(frame, foot, 5, (0, 255, 0), -1)
-
-
             ## red color attacker
             for i in range(len(e)):
                 if cv2.contourArea(e[i]) < cnt_thresh:
                     break
 
                 x, y, w, h = cv2.boundingRect(e[i])
-                if x1_min<x:
+                if x1_min<x and x > 4/5*W:
                     pass
                 else:
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
@@ -220,12 +218,14 @@ while(cap.isOpened()):
                         center = (0, 0)
                     # find the foot of the players
                     foot = (center[0], int(center[1] + h * 1.1))
+                    location_red.append(center[0])
+                    location_red_2d.append(center)
                     cv2.circle(frame, foot, 5, (0, 255, 0), -1)
         # ----------------player detection end---------------------------------------------
         # ----------------ball tracking ---------------------------------------------------
         # ------here I want to set auto detect ball to help tracking--------------
         flag_track = False
-        if counter % 10 == 0:
+        if counter % 20 == 0:
             # print("bingo")
             # library of color
             whiteLower = (0, 0, 205)
@@ -268,7 +268,7 @@ while(cap.isOpened()):
         # print(center)
             if center:
                 initBB = (center[0], center[1], 15, 15)
-                fps = FPS().start()
+                # fps = FPS().start()
                 tracker.init(frame, initBB)
                 flag_track = True
                 # print("initBB",initBB)
@@ -292,24 +292,12 @@ while(cap.isOpened()):
                               (0, 255, 0), 2)
 
             # update the FPS counter
-            fps.update()
-            fps.stop()
+            # fps.update()
+            # fps.stop()
 
             # initialize the set of information we'll be displaying on
             # the frame
-            info = [
-                # ("Tracker", "MIL"),
-                ("Tracker", "TLD"),
-                ("Success", "Yes" if success else "No"),
-                # ("FPS", "{:.2f}".format(fps.fps())),
-            ]
 
-            # loop over the info tuples and draw them on our frame
-            H = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-            for (i, (k, v)) in enumerate(info):
-                text = "{}: {}".format(k, v)
-                cv2.putText(frame, text, (10, H - ((i * 20) + 20)),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
         # show the output frame
         cv2.imshow("Frame", frame)
         # time.sleep(0.1)
@@ -326,12 +314,69 @@ while(cap.isOpened()):
             # start OpenCV object tracker using the supplied bounding box
             # coordinates, then start the FPS throughput estimator as well
             tracker.init(frame, initBB)
-            fps = FPS().start()
+            # fps = FPS().start()
             # fps = vs.get(cv2.CAP_PROP_FPS)
             # if the `q` key was pressed, break from the loop
         elif key == ord("q"):
             break
         counter = counter + 1
+#         ===================================================
+#  -------------------------------algorithm--------------------------------------
+
+        def takeFirst(elem):
+            return elem[0]
+        location_red_2d.sort(key=takeFirst, reverse=True)
+        flag_offside_position = False
+        flag_ball_detach = False
+        flag_offside = False
+        if max(location_red) > max(location_blue):
+            flag_offside_position = True
+            print("flag_offside_position is ture")
+        else:
+            flag_offside_position = False
+        if box is not None:
+            min_leng = 100000
+            coun = 0
+            index = 100
+
+            for location in location_red_2d:
+                leng = abs(location[0] - box[0])**2 + abs(location[1] - box[0])**2
+                # print(leng)
+                if leng < min_leng:
+                    min_leng = leng
+                    index = coun
+                coun = coun + 1
+            print(index, min_leng)
+            if min_leng < 13000:
+                print("ball attached")
+                flag_ball_detach = False
+                record_temp = index
+            else:
+                flag_ball_detach = True
+                record = record_temp  # remember the last one who touch the ball
+                pass
+            if record is not None and not flag_ball_detach:  # when somebody get the ball
+                if record != index and index == 0 and flag_offside_position:
+                    print("offside")
+                    flag_offside = True
+                pass
+        info = [
+            # ("Tracker", "MIL"),
+            ("Tracker: ", "TLD"),
+            ("Success: ", "Yes" if success else "No"),
+            ("Offside Position: ", "Yes" if flag_offside_position else "No"),
+            ("Ball Attached: ", "No" if flag_ball_detach else "Yes"),
+            ("Offside: ", "Yes" if flag_offside else "No")
+            # ("FPS", "{:.2f}".format(fps.fps())),
+        ]
+
+        # loop over the info tuples and draw them on our frame
+        for (i, (k, v)) in enumerate(info):
+            text = "{}: {}".format(k, v)
+            cv2.putText(frame, text, (10, H - ((i * 20) + 20)),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+
+
 
 
 # every thing is done write to screen
