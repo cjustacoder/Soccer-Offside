@@ -6,7 +6,7 @@ from imutils.video import FPS
 import time
 
 
-cap = cv2.VideoCapture(r'offsidewhite1.mp4')
+cap = cv2.VideoCapture(r'offsidenew6.mp4')
 # fourcc = int(cap.get(cv2.CAP_PROP_FOURCC))
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
 fps = cap.get(cv2.CAP_PROP_FPS)
@@ -56,11 +56,11 @@ while(cap.isOpened()):
         hsv = cv2.cvtColor(sharpen, cv2.COLOR_BGR2HSV)
 
         # define range of blue color in HSV
-        lower_white = np.array([0, 0, 205])
-        upper_white = np.array([255, 50, 255])
+        lower_white_line = np.array([0, 0, 205])
+        upper_white_line = np.array([255, 50, 255])
 
         # Threshold the HSV image to get only blue colors
-        mask = cv2.inRange(hsv, lower_white, upper_white)
+        mask = cv2.inRange(hsv, lower_white_line, upper_white_line)
 
         # Bitwise-AND mask and original image
         res = cv2.bitwise_and(frame, frame, mask=mask)
@@ -97,15 +97,19 @@ while(cap.isOpened()):
     # define range of blue color in HSV
         lower_blue = np.array([100, 0, 0])
         upper_blue = np.array([140, 255, 255])
-    # define range of red color in HSV
+    # # define range of red color in HSV
+    #     lower_red = np.array([0, 0, 0])
+    #     upper_red = np.array([5, 255, 255])
+
+    # define range of orange color in HSV
         lower_red = np.array([0, 0, 0])
         upper_red = np.array([5, 255, 255])
     # define range of white color in HSV
         lower_white = np.array([0, 0, 200])
         upper_white = np.array([255, 55, 255])
     # define range of yellow color in HSV
-        lower_yellow = np.array([50, 0, 0])
-        upper_yellow = np.array([60, 100, 100])
+        lower_yellow = np.array([33, 50, 70])
+        upper_yellow = np.array([40, 150,170])
 
 
         # Threshold the HSV image to get only blue colors
@@ -175,7 +179,7 @@ while(cap.isOpened()):
             # print("maximum is :", max(location))
             # print("index: ", location.index(max(location)))
             cv2.line(frame, (max(location), 0), (max(location), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))), (255, 0, 0), 2)
-            ##yellow color
+            ##yellow color attacker
             # for i in range(len(f)):
             #     if cv2.contourArea(f[i]) < cnt_thresh:
             #         break
@@ -195,6 +199,8 @@ while(cap.isOpened()):
             #         # find the foot of the players
             #         foot = (center[0], int(center[1] + h * 1.1))
             #         cv2.circle(frame, foot, 5, (0, 255, 0), -1)
+
+
             ## red color attacker
             for i in range(len(e)):
                 if cv2.contourArea(e[i]) < cnt_thresh:
