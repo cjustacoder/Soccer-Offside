@@ -51,9 +51,9 @@ while(cap.isOpened()):
         #             cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
         kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
-        frame = cv2.filter2D(frame, -1, kernel)
+        sharpen = cv2.filter2D(frame, -1, kernel)
         # Convert BGR to HSV
-        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        hsv = cv2.cvtColor(sharpen, cv2.COLOR_BGR2HSV)
 
         # define range of blue color in HSV
         lower_white = np.array([0, 0, 205])
@@ -66,7 +66,7 @@ while(cap.isOpened()):
         res = cv2.bitwise_and(frame, frame, mask=mask)
 
         edges = cv2.Canny(mask, 50, 120)
-        ##offsidewhite
+        # offsidewhite
         # lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 180, lines=100, minLineLength=690, maxLineGap=120)
 
         lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 165, lines=100, minLineLength=675, maxLineGap=120)
