@@ -5,7 +5,7 @@
 2. Can be used by Soccer referee, Soccer live stream, Soccer player & Soccer coach, VAR
 
 ## System Diagram
-![System Diagram](/material/System Diagram.png)
+![System Diagram](/material/System_Diagram.png)
 
 ## Methods
 1. Use OpenCV to abstract images from video
