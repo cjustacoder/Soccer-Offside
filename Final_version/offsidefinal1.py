@@ -120,12 +120,6 @@ while cap.isOpened():
 
                 x, y, w, h = cv2.boundingRect(c[i])
 
-                # h += 10
-                # y -= 5
-                # if h < 0.8 * w:
-                #     continue
-                # elif h / float(w) > 3:
-                #     continue
                 if x1_min<x and x > 4/5*W:
                     pass
                 else:
@@ -142,30 +136,7 @@ while cap.isOpened():
                     foot = (center[0], int(center[1] + h*1.1))
                     cv2.circle(frame, foot, 5, (0, 0, 255), -1)
             # find the last one
-            # print("location_blue of defendent: ",location_blue)
-            # print("maximum is :", max(location_blue))
-            # print("index: ", location_blue.index(max(location_blue)))
             cv2.line(frame, (max(location_blue), 0), (max(location_blue), H), (255, 0, 0), 2)
-            ##yellow color
-            # for i in range(len(f)):
-            #     if cv2.contourArea(f[i]) < cnt_thresh:
-            #         break
-            #
-            #     x, y, w, h = cv2.boundingRect(f[i])
-            #     if x1_min<x:
-            #         pass
-            #     else:
-            #         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            #         M = cv2.moments(f[i])
-            #         # find the center of gravity of the players
-            #         # center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-            #         if M["m00"] != 0:
-            #             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-            #         else:
-            #             center = (0, 0)
-            #         # find the foot of the players
-            #         foot = (center[0], int(center[1] + h * 1.1))
-            #         cv2.circle(frame, foot, 5, (0, 255, 0), -1)
             ## red color attacker
             for i in range(len(e)):
                 if cv2.contourArea(e[i]) < cnt_thresh:
@@ -193,7 +164,6 @@ while cap.isOpened():
         # ------here I want to set auto detect ball to help tracking--------------
         flag_track = False
         if counter % 20 == 0:
-            # print("bingo")
             # library of color
             whiteLower = (0, 0, 205)
             whiteUpper = (255, 50, 255)

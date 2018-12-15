@@ -30,30 +30,6 @@ while(cap.isOpened()):
     ret, frame = cap.read()
     if ret:
         # -------------------bounderay line----------------------------------
-        # kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
-        # sharpen = cv2.filter2D(frame, -1, kernel)
-        # # blurred = cv2.GaussianBlur(sharpen, (5, 5), 0)
-        # # Convert BGR to HSV
-        # hsv = cv2.cvtColor(sharpen, cv2.COLOR_BGR2HSV)
-        #
-        # # define range of blue color in HSV
-        # lower_white = np.array([0, 0, 150])
-        # upper_white = np.array([255, 50, 255])
-        #
-        # # Threshold the HSV image to get only blue colors
-        # mask = cv2.inRange(hsv, lower_white, upper_white)
-        #
-        # # Bitwise-AND mask and original image
-        # res = cv2.bitwise_and(frame, frame, mask=mask)
-        #
-        # edges = cv2.Canny(mask, 50, 120)
-        # lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 200, lines=100, minLineLength=1000, maxLineGap=200)
-        # if lines is not None:
-        #     for line in lines:
-        #         x1, y1, x2, y2 = line[0]
-        #         if (x2 - x1) < (y2 - y1):
-        #             cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-
         kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
         sharpen = cv2.filter2D(frame, -1, kernel)
         # Convert BGR to HSV
@@ -162,13 +138,6 @@ while(cap.isOpened()):
                     break
 
                 x, y, w, h = cv2.boundingRect(c[i])
-
-                # h += 10
-                # y -= 5
-                # if h < 0.8 * w:
-                #     continue
-                # elif h / float(w) > 3:
-                #     continue
                 if x1_min<x :
                     pass
                 else:
@@ -189,26 +158,6 @@ while(cap.isOpened()):
             # print("maximum is :", max(location_blue))
             # print("index: ", location_blue.index(max(location_blue)))
             cv2.line(frame, (max(location_blue), 0), (max(location_blue), H), (255, 0, 0), 2)
-            ##yellow color
-            # for i in range(len(f)):
-            #     if cv2.contourArea(f[i]) < cnt_thresh:
-            #         break
-            #
-            #     x, y, w, h = cv2.boundingRect(f[i])
-            #     if x1_min<x:
-            #         pass
-            #     else:
-            #         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            #         M = cv2.moments(f[i])
-            #         # find the center of gravity of the players
-            #         # center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-            #         if M["m00"] != 0:
-            #             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-            #         else:
-            #             center = (0, 0)
-            #         # find the foot of the players
-            #         foot = (center[0], int(center[1] + h * 1.1))
-            #         cv2.circle(frame, foot, 5, (0, 255, 0), -1)
             ## red color attacker
             for i in range(len(e)):
                 if cv2.contourArea(e[i]) < cnt_thresh:
