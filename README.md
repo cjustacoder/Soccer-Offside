@@ -1,6 +1,6 @@
 # Soccer-Offside Detection
 :soccer:
-
+To see our final accomplishment, please go to folder **Final_version**.
 ## Project Abstraction
 The goal of this project is to detect an offside situation in a soccer game. 
 
