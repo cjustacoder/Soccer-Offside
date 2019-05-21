@@ -28,7 +28,7 @@
 
 ## Future Steps
 1. Incorporate Multiple Field Camera
-2. Auto-Adjust Color Thresholds
+2. Auto-Adjust Color Thresholds by background subtraction and foreground statistics
 3. Affine transform with whole pitch view
 
 ## Demo
