@@ -32,5 +32,7 @@
 3. Affine transform with whole pitch view
 
 ## Demo
-To review our demo, please look inside folder **outputvideo**
+![Demo1](/gif/Mask.gif)
+![Demo2](/gif/Mask.gif)
+The video of our demos can be found inside folder **outputvideo**
 
