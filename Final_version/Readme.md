@@ -10,7 +10,7 @@
 ## Methods
 1. Use OpenCV to abstract images from video
 ![Original](/Final_version/material/Picture1.jpg)
-2. Use Hough Line Detection to obtain the boundary 
+2. Use Hough Line Detection to obtain boundary lines
 ![Hough](/Final_version/material/Picture2.png)
 3. Use color-based threshold to build a mask to identify players
 ![Player](/Final_version/material/Picture3.png)
